@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo de Cara ou Coroa</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container-jogo">
+        <h1>Cara ou Coroa</h1>
+
+        <div id="moeda" class="moeda">
+            <div class="face cara">
+                <img src="https://i.imgur.com/K62r8S7.png" alt="Cara">
+            </div>
+            <div class="face coroa">
+                <img src="https://i.imgur.com/pSkso5s.png" alt="Coroa">
+            </div>
+        </div>
+
+        <div id="resultado-texto" class="resultado">Clique no botão para girar!</div>
+        
+        <button id="girar-btn">Girar Moeda</button>
+        
+        <div class="placar">
+            <p><strong>Caras:</strong> <span id="placar-cara">0</span></p>
+            <p><strong>Coroas:</strong> <span id="placar-coroa">0</span></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

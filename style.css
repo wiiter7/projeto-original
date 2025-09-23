@@ -1,0 +1,118 @@
+/* Estilos Gerais */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #1a1a2e;
+    color: #e0e1dd;
+    margin: 0;
+}
+
+.container-jogo {
+    text-align: center;
+    background-color: #16213e;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+h1 {
+    color: #0f3460;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+    color: #e94560;
+}
+
+/* Estilos da Moeda e Efeito 3D */
+.moeda {
+    width: 150px;
+    height: 150px;
+    position: relative;
+    margin: 30px auto;
+    /* Habilita o espaço 3D para os filhos */
+    transform-style: preserve-3d;
+    transition: transform 1.5s cubic-bezier(0.6, 0.04, 0.98, 0.335);
+}
+
+.face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2em;
+    font-weight: bold;
+    /* Esconde a face que está "atrás" */
+    backface-visibility: hidden;
+    overflow: hidden; /* Garante que a imagem não saia do círculo */
+}
+
+.face img {
+    width: 100%;
+    height: 100%;
+}
+
+.cara {
+    background-color: #c0c0c0; /* Cor de prata */
+}
+
+.coroa {
+    background-color: #b87333; /* Cor de bronze */
+    /* Posiciona a face 'coroa' virada para trás no início */
+    transform: rotateY(180deg);
+}
+
+/* Animações de giro (serão adicionadas via JavaScript) */
+.moeda.girando-cara {
+    /* Gira várias vezes e para em 'cara' (0 graus) */
+    transform: rotateY(3600deg); 
+}
+
+.moeda.girando-coroa {
+    /* Gira várias vezes e para em 'coroa' (180 graus) */
+    transform: rotateY(3780deg); /* 3600 + 180 */
+}
+
+/* Estilos dos outros elementos */
+.resultado {
+    font-size: 1.5em;
+    margin-top: 20px;
+    min-height: 40px;
+    font-weight: bold;
+}
+
+button {
+    background-color: #e94560;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.2em;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover {
+    background-color: #f06a81;
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+button:disabled {
+    background-color: #555;
+    cursor: not-allowed;
+}
+
+.placar {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-around;
+    font-size: 1.2em;
+}
