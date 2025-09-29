@@ -9,6 +9,8 @@
     --shadow: rgba(0, 0, 0, 0.25);
 }
 
+/* ... (resto do seu CSS permanece o mesmo) ... */
+
 body {
     font-family: 'Poppins', sans-serif;
     display: flex;
@@ -41,9 +43,8 @@ h1 {
     text-shadow: 2px 2px 5px var(--shadow);
 }
 
-/* Container da moeda com perspectiva */
 .moeda-container {
-    perspective: 1000px; /* Efeito 3D mais realista */
+    perspective: 1000px;
     margin: 30px auto;
 }
 
@@ -52,7 +53,7 @@ h1 {
     height: 150px;
     position: relative;
     transform-style: preserve-3d;
-    transition: transform 1.2s cubic-bezier(0.64, 0.02, 0.4, 1.51); /* Animação mais elástica */
+    transition: transform 1.2s cubic-bezier(0.64, 0.02, 0.4, 1.51);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
     border-radius: 50%;
 }
@@ -67,7 +68,25 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
+    /* TRANSIÇÃO SUAVE PARA O FADE */
+    transition: opacity 0.2s ease-in-out;
 }
+
+/* NOVO ESTILO PARA A FACE DE GIRO */
+.face-giro {
+    opacity: 0; /* Começa invisível */
+}
+
+/* NOVAS REGRAS DE VISIBILIDADE */
+.moeda.is-spinning .cara,
+.moeda.is-spinning .coroa {
+    opacity: 0; /* Esconde cara/coroa durante o giro */
+}
+
+.moeda.is-spinning .face-giro {
+    opacity: 1; /* Mostra a imagem de giro */
+}
+
 
 .face img {
     width: 100%;
@@ -84,74 +103,9 @@ h1 {
     transform: rotateY(180deg);
 }
 
-/* Animações de giro */
 .moeda.girando-cara {
-    transform: rotateY(1800deg); /* 5 voltas */
+    transform: rotateY(1800deg);
 }
 
 .moeda.girando-coroa {
-    transform: rotateY(1980deg); /* 5 voltas + 180 graus */
-}
-
-.resultado {
-    font-size: 1.5em;
-    margin: 25px 0;
-    min-height: 45px;
-    font-weight: 600;
-    color: var(--accent);
-}
-
-button {
-    background: linear-gradient(45deg, var(--primary), var(--primary-hover));
-    color: white;
-    border: none;
-    padding: 15px 35px;
-    font-size: 1.2em;
-    font-weight: 600;
-    border-radius: 50px;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: all 0.3s ease;
-    box-shadow: 0 5px 15px var(--shadow);
-}
-
-button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px var(--shadow);
-}
-
-button:active {
-    transform: translateY(-1px);
-}
-
-button:disabled {
-    background: #555;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-}
-
-.placar {
-    margin-top: 30px;
-    display: flex;
-    justify-content: space-around;
-    font-size: 1.1em;
-}
-
-.placar-item {
-    background-color: rgba(0, 0, 0, 0.2);
-    padding: 10px 20px;
-    border-radius: 10px;
-    width: 100px;
-}
-
-.placar-item strong {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: 400;
-}
-
-.placar-item span {
-    font-size: 1.8em;
-    font-weight: 700;
-}
+    transform: rotateY(1980deg);
