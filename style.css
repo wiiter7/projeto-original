@@ -31,7 +31,6 @@ h1 {
     height: 150px;
     position: relative;
     margin: 30px auto;
-    /* Habilita o espaço 3D para os filhos */
     transform-style: preserve-3d;
     transition: transform 1.5s cubic-bezier(0.6, 0.04, 0.98, 0.335);
 }
@@ -46,9 +45,8 @@ h1 {
     align-items: center;
     font-size: 2em;
     font-weight: bold;
-    /* Esconde a face que está "atrás" */
     backface-visibility: hidden;
-    overflow: hidden; /* Garante que a imagem não saia do círculo */
+    overflow: hidden;
 }
 
 .face img {
@@ -62,18 +60,15 @@ h1 {
 
 .coroa {
     background-color: #b87333; /* Cor de bronze */
-    /* Posiciona a face 'coroa' virada para trás no início */
     transform: rotateY(180deg);
 }
 
 /* Animações de giro (serão adicionadas via JavaScript) */
 .moeda.girando-cara {
-    /* Gira várias vezes e para em 'cara' (0 graus) */
     transform: rotateY(3600deg); 
 }
 
 .moeda.girando-coroa {
-    /* Gira várias vezes e para em 'coroa' (180 graus) */
     transform: rotateY(3780deg); /* 3600 + 180 */
 }
 
