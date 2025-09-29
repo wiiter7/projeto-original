@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jogo de Cara ou Coroa</title>
+    <title>Cara ou Coroa 🪙</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,22 +14,30 @@
     <div class="container-jogo">
         <h1>Cara ou Coroa</h1>
 
-        <div id="moeda" class="moeda">
-            <div class="face cara">
-                <img src="https://i.imgur.com/K62r8S7.png" alt="Cara">
-            </div>
-            <div class="face coroa">
-                <img src="https://i.imgur.com/pSkso5s.png" alt="Coroa">
+        <div class="moeda-container">
+            <div id="moeda" class="moeda">
+                <div class="face cara">
+                    <img src="https://i.imgur.com/K62r8S7.png" alt="Cara">
+                </div>
+                <div class="face coroa">
+                    <img src="https://i.imgur.com/pSkso5s.png" alt="Coroa">
+                </div>
             </div>
         </div>
 
-        <div id="resultado-texto" class="resultado">Clique no botão para girar!</div>
+        <div id="resultado-texto" class="resultado">Vamos começar?</div>
         
-        <button id="girar-btn">Girar Moeda</button>
+        <button id="girar-btn">Girar a Moeda!</button>
         
         <div class="placar">
-            <p><strong>Caras:</strong> <span id="placar-cara">0</span></p>
-            <p><strong>Coroas:</strong> <span id="placar-coroa">0</span></p>
+            <div class="placar-item">
+                <strong>Caras</strong>
+                <span id="placar-cara">0</span>
+            </div>
+            <div class="placar-item">
+                <strong>Coroas</strong>
+                <span id="placar-coroa">0</span>
+            </div>
         </div>
     </div>
 
