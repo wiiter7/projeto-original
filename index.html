@@ -42,10 +42,9 @@
             height: 100%;
             position: relative;
             transform-style: preserve-3d;
-            transition: transform 1s ease-in-out;
+            /* A transição agora cuidará de TODAS as animações de transformação */
+            transition: transform 1s ease-in-out; 
         }
-
-        /* A classe .flipping foi removida pois não é mais necessária */
 
         .face {
             position: absolute;
@@ -101,10 +100,10 @@
         <div id="coin-container">
             <div id="coin">
                 <div class="face heads">
-                    <img src="cara.jpeg" alt="Cara" width="150">
+                    <img src="https://i.ibb.co/XX4LhpS/moeda-cara.png" alt="Cara" width="150">
                 </div>
                 <div class="face tails">
-                    <img src="coroa.jpeg" alt="Coroa" width="150">
+                    <img src="https://i.ibb.co/p1z2bM3/moeda-coroa.png" alt="Coroa" width="150">
                 </div>
             </div>
         </div>
@@ -114,13 +113,13 @@
     </div>
 
     <script>
-        // --- SCRIPT CORRIGIDO ---
+        // --- JAVASCRIPT CORRIGIDO ---
         const coin = document.getElementById('coin');
         const flipButton = document.getElementById('flip-button');
         const result = document.getElementById('result');
 
         let isFlipping = false;
-        // Variável para acumular a rotação a cada jogada
+        // Variável para guardar a rotação atual e acumulá-la
         let currentRotation = 0;
 
         flipButton.addEventListener('click', () => {
@@ -134,25 +133,31 @@
             // Decide o resultado (true para Coroa, false para Cara)
             const isTails = Math.random() < 0.5;
 
-            // 1. Adiciona um número de giros completos para o efeito visual (ex: 5 giros = 1800 graus)
-            //    Sempre adicionamos à rotação anterior para que a moeda continue girando.
+            // 1. Adiciona um número de giros completos para o efeito visual.
+            //    Por exemplo, 5 giros = 5 * 360 = 1800 graus.
             currentRotation += 1800;
 
-            // 2. Ajusta o ângulo final para o resultado correto.
-            //    Se o resultado é 'Coroa' e a moeda pararia em 'Cara', adicionamos 180 graus.
-            //    Se o resultado é 'Cara' e a moeda pararia em 'Coroa', adicionamos 180 graus.
-            const isGoingToLandOnTails = (currentRotation / 180) % 2 !== 0;
-
-            if (isTails !== isGoingToLandOnTails) {
-                currentRotation += 180;
+            // 2. Se o resultado for Coroa, adicionamos mais 180 graus para virar a moeda.
+            //    Se for Cara, não fazemos nada, pois os giros completos já terminam em "Cara".
+            //    Esta lógica é ajustada para sempre parar no lado certo, não importa o giro anterior.
+            if (isTails) {
+                 // Se a rotação atual for parar em "Cara" (múltiplo de 360), adiciona 180 para virar "Coroa".
+                if ((currentRotation / 180) % 2 === 0) {
+                    currentRotation += 180;
+                }
+            } else {
+                // Se a rotação atual for parar em "Coroa", adiciona 180 para virar "Cara".
+                if ((currentRotation / 180) % 2 !== 0) {
+                    currentRotation += 180;
+                }
             }
 
-            // 3. Aplica a rotação calculada. A transição no CSS fará a animação acontecer.
+            // 3. Aplica a nova rotação total à moeda. A transição do CSS fará a animação.
             coin.style.transform = `rotateY(${currentRotation}deg)`;
             
-            // Aguarda a animação terminar (1 segundo, como definido no CSS)
+            // Aguarda a animação de 1 segundo terminar
             setTimeout(() => {
-                // A moeda já está na posição certa, agora só mostramos o texto
+                // Mostra o resultado correto
                 if (isTails) {
                     result.textContent = 'Resultado: Coroa';
                 } else {
@@ -162,7 +167,7 @@
                 // Libera o botão para um novo jogo
                 isFlipping = false;
                 flipButton.disabled = false;
-            }, 1000); // Duração da animação em milissegundos
+            }, 1000); // Deve ser igual à duração da transição no CSS
         });
     </script>
 
