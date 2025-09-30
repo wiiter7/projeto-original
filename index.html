@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jogo de Cara ou Coroa</title>
     <style>
-        /* CSS para estilização e animação */
+
         body {
             font-family: Arial, sans-serif;
             display: flex;
@@ -34,7 +34,7 @@
             width: 150px;
             height: 150px;
             margin: 20px auto;
-            perspective: 1000px; /* Efeito de profundidade para o 3D */
+            perspective: 1000px; 
         }
         
         #coin {
@@ -42,7 +42,7 @@
             height: 100%;
             position: relative;
             transform-style: preserve-3d;
-            /* A transição agora cuidará de TODAS as animações de transformação */
+        
             transition: transform 1s ease-in-out; 
         }
 
@@ -50,16 +50,16 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            backface-visibility: hidden; /* Oculta a face de trás do elemento */
+            backface-visibility: hidden; 
         }
 
         .heads {
-            /* A imagem da cara fica na frente */
+            
             transform: rotateY(0deg);
         }
 
         .tails {
-            /* A imagem da coroa fica atrás, já rotacionada */
+            
             transform: rotateY(180deg);
         }
 
@@ -88,7 +88,7 @@
             font-size: 22px;
             font-weight: bold;
             color: #555;
-            height: 30px; /* Altura fixa para não "pular" o layout */
+            height: 30px;
         }
     </style>
 </head>
@@ -113,61 +113,52 @@
     </div>
 
     <script>
-        // --- JAVASCRIPT CORRIGIDO ---
+        
         const coin = document.getElementById('coin');
         const flipButton = document.getElementById('flip-button');
         const result = document.getElementById('result');
 
         let isFlipping = false;
-        // Variável para guardar a rotação atual e acumulá-la
+        
         let currentRotation = 0;
 
         flipButton.addEventListener('click', () => {
-            // Previne múltiplos cliques durante a animação
+            
             if (isFlipping) return;
 
             isFlipping = true;
             flipButton.disabled = true;
             result.textContent = '';
-
-            // Decide o resultado (true para Coroa, false para Cara)
+            
             const isTails = Math.random() < 0.5;
 
-            // 1. Adiciona um número de giros completos para o efeito visual.
-            //    Por exemplo, 5 giros = 5 * 360 = 1800 graus.
             currentRotation += 1800;
 
-            // 2. Se o resultado for Coroa, adicionamos mais 180 graus para virar a moeda.
-            //    Se for Cara, não fazemos nada, pois os giros completos já terminam em "Cara".
-            //    Esta lógica é ajustada para sempre parar no lado certo, não importa o giro anterior.
             if (isTails) {
-                 // Se a rotação atual for parar em "Cara" (múltiplo de 360), adiciona 180 para virar "Coroa".
+    
                 if ((currentRotation / 180) % 2 === 0) {
                     currentRotation += 180;
                 }
             } else {
-                // Se a rotação atual for parar em "Coroa", adiciona 180 para virar "Cara".
+    
                 if ((currentRotation / 180) % 2 !== 0) {
                     currentRotation += 180;
                 }
             }
 
-            // 3. Aplica a nova rotação total à moeda. A transição do CSS fará a animação.
             coin.style.transform = `rotateY(${currentRotation}deg)`;
             
-            // Aguarda a animação de 1 segundo terminar
             setTimeout(() => {
-                // Mostra o resultado correto
+                
                 if (isTails) {
                     result.textContent = 'Resultado: Coroa';
                 } else {
                     result.textContent = 'Resultado: Cara';
                 }
 
-                // Libera o botão para um novo jogo
                 isFlipping = false;
                 flipButton.disabled = false;
-            }, 1000); // Deve ser igual à duração da transição no CSS
+            }, 1000); 
         });
     </script>
 

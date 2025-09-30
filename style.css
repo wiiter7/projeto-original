@@ -46,8 +46,8 @@
         height: 100%;
         position: relative;
         transform-style: preserve-3d;
-        transition: transform 1s cubic-bezier(0.6, -0.28, 0.735, 0.045); /* MELHORIA: Efeito de "arranque" e "freada" */
-        /* NOVO: Sombra projetada para a moeda, dando mais realismo */
+        transition: transform 1s cubic-bezier(0.6, -0.28, 0.735, 0.045); 
+        
         filter: drop-shadow(0 5px 8px rgba(0,0,0,0.3));
     }
 
