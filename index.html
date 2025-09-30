@@ -7,7 +7,172 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* CSS Organizado */
+        :root {
+            --bg-dark: #12182b;
+            --bg-light: #1f294a;
+            --primary: #5a67d8;
+            --primary-hover: #434190;
+            --accent: #f56565;
+            --text-light: #e0e1dd;
+            --shadow: rgba(0, 0, 0, 0.25);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--bg-dark), var(--bg-light));
+            color: var(--text-light);
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container-jogo {
+            text-align: center;
+            background-color: var(--bg-light);
+            padding: 30px 40px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h1 {
+            color: var(--text-light);
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 5px var(--shadow);
+        }
+
+        .moeda-container {
+            perspective: 1000px;
+            margin: 30px auto;
+            height: 150px; /* Garante espaço para a moeda */
+        }
+
+        .moeda {
+            width: 150px;
+            height: 150px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 1.2s cubic-bezier(0.64, 0.02, 0.4, 1.51);
+            border-radius: 50%;
+        }
+
+        .face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            backface-visibility: hidden;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.2s ease-in-out;
+        }
+        
+        .face img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .cara {
+            transform: translateZ(1px); /* Pequeno ajuste para evitar z-fighting */
+        }
+
+        .coroa {
+            transform: rotateY(180deg);
+        }
+        
+        .face-giro {
+            opacity: 0; /* Começa invisível */
+        }
+
+        /* Regras de visibilidade durante a animação */
+        .moeda.is-spinning .cara,
+        .moeda.is-spinning .coroa {
+            opacity: 0; /* Esconde cara/coroa durante o giro */
+        }
+
+        .moeda.is-spinning .face-giro {
+            opacity: 1; /* Mostra a imagem de giro */
+        }
+
+        /* Classes de animação */
+        .moeda.girando-cara {
+            transform: rotateY(1800deg); /* 5 voltas completas */
+        }
+
+        .moeda.girando-coroa {
+            transform: rotateY(1980deg); /* 5.5 voltas para mostrar o outro lado */
+        }
+
+        /* Estilos para os elementos que faltavam */
+        #girar-btn {
+            background-color: var(--primary);
+            color: var(--text-light);
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1em;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            margin-bottom: 20px;
+        }
+
+        #girar-btn:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        #girar-btn:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+            transform: translateY(0);
+        }
+
+        #resultado-texto {
+            font-size: 1.2em;
+            font-weight: 600;
+            min-height: 25px;
+            margin-bottom: 25px;
+        }
+
+        .placar {
+            display: flex;
+            justify-content: space-around;
+            background-color: var(--bg-dark);
+            padding: 15px;
+            border-radius: 15px;
+            margin-top: 10px;
+        }
+
+        .placar-item {
+            flex-basis: 50%;
+        }
+
+        .placar-item h3 {
+            margin: 0 0 5px 0;
+            color: var(--primary);
+        }
+
+        .placar-item p {
+            margin: 0;
+            font-size: 1.8em;
+            font-weight: 700;
+        }
+    </style>
 </head>
 <body>
 
@@ -29,3 +194,81 @@
                 </div>
             </div>
         </div>
+
+        <button id="girar-btn">Girar Moeda</button>
+        <p id="resultado-texto">Clique para começar!</p>
+
+        <div class="placar">
+            <div class="placar-item">
+                <h3>Cara</h3>
+                <p id="placar-cara">0</p>
+            </div>
+            <div class="placar-item">
+                <h3>Coroa</h3>
+                <p id="placar-coroa">0</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Seleciona os elementos do HTML que vamos manipular
+        const moeda = document.getElementById('moeda');
+        const girarBtn = document.getElementById('girar-btn');
+        const resultadoTexto = document.getElementById('resultado-texto');
+        const placarCaraEl = document.getElementById('placar-cara');
+        const placarCoroaEl = document.getElementById('placar-coroa');
+
+        // Objeto para guardar a pontuação
+        let placar = {
+            cara: 0,
+            coroa: 0
+        };
+
+        // Adiciona um "ouvinte" de evento para o clique no botão
+        girarBtn.addEventListener('click', () => {
+            // Desabilita o botão para evitar cliques múltiplos
+            girarBtn.disabled = true;
+            resultadoTexto.textContent = 'Girando...';
+            
+            // Sorteia o resultado: 0 para Cara, 1 para Coroa
+            const resultadoSorteado = Math.floor(Math.random() * 2);
+
+            // Reseta as classes de animação anteriores
+            moeda.classList.remove('girando-cara', 'girando-coroa', 'is-spinning');
+            
+            // Força o navegador a "repintar" o elemento. Truque para garantir que a animação reinicie
+            void moeda.offsetWidth;
+
+            // Adiciona a classe que ativa a imagem de giro (blur)
+            moeda.classList.add('is-spinning');
+
+            // Adiciona a classe que define a rotação final da moeda
+            if (resultadoSorteado === 0) {
+                moeda.classList.add('girando-cara');
+            } else {
+                moeda.classList.add('girando-coroa');
+            }
+
+            // Espera a animação de 1.2 segundos terminar para mostrar o resultado
+            setTimeout(() => {
+                // Remove a classe de giro para mostrar o resultado final (cara ou coroa)
+                moeda.classList.remove('is-spinning');
+
+                // Atualiza o placar e o texto com base no resultado
+                if (resultadoSorteado === 0) {
+                    resultadoTexto.textContent = 'Deu Cara!';
+                    placar.cara++;
+                    placarCaraEl.textContent = placar.cara;
+                } else {
+                    resultadoTexto.textContent = 'Deu Coroa!';
+                    placar.coroa++;
+                    placarCoroaEl.textContent = placar.coroa;
+                }
+                
+                // Habilita o botão novamente
+                girarBtn.disabled = false;
+            }, 1200); // O tempo (1200ms) deve ser o mesmo da transição no CSS
+        });
+    </script>
+</body>
+</html>
