@@ -45,10 +45,7 @@
             transition: transform 1s ease-in-out;
         }
 
-        /* Classe que ativa a animação de giro */
-        .flipping {
-             transform: rotateY(1800deg); /* Gira 5 vezes (1800 = 5 * 360) */
-        }
+        /* A classe .flipping foi removida pois não é mais necessária */
 
         .face {
             position: absolute;
@@ -117,14 +114,14 @@
     </div>
 
     <script>
-        // JavaScript para a lógica do jogo
+        // --- SCRIPT CORRIGIDO ---
         const coin = document.getElementById('coin');
         const flipButton = document.getElementById('flip-button');
         const result = document.getElementById('result');
 
         let isFlipping = false;
-        let headsCount = 0;
-        let tailsCount = 0;
+        // Variável para acumular a rotação a cada jogada
+        let currentRotation = 0;
 
         flipButton.addEventListener('click', () => {
             // Previne múltiplos cliques durante a animação
@@ -134,23 +131,31 @@
             flipButton.disabled = true;
             result.textContent = '';
 
-            // Decide o resultado (0 para Cara, 1 para Coroa)
+            // Decide o resultado (true para Coroa, false para Cara)
             const isTails = Math.random() < 0.5;
 
-            // Adiciona a classe para iniciar a animação de giro
-            coin.classList.add('flipping');
+            // 1. Adiciona um número de giros completos para o efeito visual (ex: 5 giros = 1800 graus)
+            //    Sempre adicionamos à rotação anterior para que a moeda continue girando.
+            currentRotation += 1800;
+
+            // 2. Ajusta o ângulo final para o resultado correto.
+            //    Se o resultado é 'Coroa' e a moeda pararia em 'Cara', adicionamos 180 graus.
+            //    Se o resultado é 'Cara' e a moeda pararia em 'Coroa', adicionamos 180 graus.
+            const isGoingToLandOnTails = (currentRotation / 180) % 2 !== 0;
+
+            if (isTails !== isGoingToLandOnTails) {
+                currentRotation += 180;
+            }
+
+            // 3. Aplica a rotação calculada. A transição no CSS fará a animação acontecer.
+            coin.style.transform = `rotateY(${currentRotation}deg)`;
             
             // Aguarda a animação terminar (1 segundo, como definido no CSS)
             setTimeout(() => {
-                // Remove a classe para poder girar novamente
-                coin.classList.remove('flipping');
-
-                // Atualiza a posição final da moeda (sem animação)
+                // A moeda já está na posição certa, agora só mostramos o texto
                 if (isTails) {
-                    coin.style.transform = 'rotateY(180deg)'; // Garante que a coroa esteja visível
                     result.textContent = 'Resultado: Coroa';
                 } else {
-                    coin.style.transform = 'rotateY(0deg)'; // Garante que a cara esteja visível
                     result.textContent = 'Resultado: Cara';
                 }
 
