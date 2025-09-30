@@ -1,261 +1,143 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cara ou Coroa 🪙</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+    /* CSS APRIMORADO para estilização e animação */
+    
+    /* Importa a fonte do Google Fonts (alternativa ao link no <head>) */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
-    <style>
-        /* 1. VARIÁVEIS E ESTILOS GERAIS */
-        :root {
-            --bg-dark: #12182b;
-            --bg-light: #1f294a;
-            --primary: #5a67d8;
-            --primary-hover: #434190;
-            --text-light: #e0e1dd;
-            --shadow: rgba(0, 0, 0, 0.25);
-        }
+    body {
+        /* MELHORIA: Fonte e fundo em gradiente */
+        font-family: 'Poppins', sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+    }
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background: linear-gradient(135deg, var(--bg-dark), var(--bg-light));
-            color: var(--text-light);
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
-        }
+    .container {
+        text-align: center;
+        background-color: rgba(255, 255, 255, 0.95);
+        padding: 40px 50px;
+        border-radius: 20px;
+        /* MELHORIA: Sombra mais elaborada para efeito de "elevação" */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(10px); /* Efeito de vidro fosco (para navegadores compatíveis) */
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
 
-        .container-jogo {
-            text-align: center;
-            background-color: var(--bg-light);
-            padding: 30px 40px;
-            border-radius: 25px;
-            box-shadow: 0 15px 35px var(--shadow);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            max-width: 400px;
-            width: 100%;
+    h1 {
+        /* MELHORIA: Cor e espaçamento */
+        color: #333;
+        margin-bottom: 30px;
+        font-weight: 600;
+        letter-spacing: 1px;
+    }
+
+    #coin-container {
+        width: 150px;
+        height: 150px;
+        margin: 30px auto;
+        perspective: 1000px;
+    }
+    
+    #coin {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        transform-style: preserve-3d;
+        transition: transform 1s cubic-bezier(0.6, -0.28, 0.735, 0.045); /* MELHORIA: Efeito de "arranque" e "freada" */
+        /* NOVO: Sombra projetada para a moeda, dando mais realismo */
+        filter: drop-shadow(0 5px 8px rgba(0,0,0,0.3));
+    }
+
+    .flipping {
+         transform: rotateY(1800deg);
+    }
+
+    .face {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+    }
+
+    .heads {
+        transform: rotateY(0deg);
+    }
+
+    .tails {
+        transform: rotateY(180deg);
+    }
+
+    #flip-button {
+        padding: 15px 30px;
+        font-size: 18px;
+        font-weight: 600;
+        color: white;
+        background: linear-gradient(45deg, #007bff, #0056b3); /* MELHORIA: Botão com gradiente */
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+    }
+
+    #flip-button:hover {
+        transform: translateY(-2px); /* Efeito de "levantar" ao passar o mouse */
+        box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+    }
+
+    /* NOVO: Efeito de clique no botão */
+    #flip-button:active {
+        transform: translateY(1px);
+        box-shadow: 0 2px 10px rgba(0, 123, 255, 0.3);
+    }
+
+    #flip-button:disabled {
+        background: #b8b8b8;
+        cursor: not-allowed;
+        box-shadow: none;
+        transform: translateY(0);
+    }
+    
+    #result {
+        margin-top: 30px;
+        font-size: 24px;
+        font-weight: 600;
+        color: #444;
+        height: 35px;
+        /* MELHORIA: Adiciona uma transição suave para quando o texto aparecer */
+        transition: opacity 0.5s ease-in-out;
+    }
+
+    /* NOVO: Estilização para telas menores (celulares) */
+    @media (max-width: 480px) {
+        .container {
+            padding: 30px 25px;
         }
 
         h1 {
-            color: var(--text-light);
-            text-transform: uppercase;
-            margin-bottom: 20px;
-            font-size: 2.5em;
-            text-shadow: 2px 2px 5px var(--shadow);
+            font-size: 24px;
         }
 
-        /* 2. ESTRUTURA DA MOEDA E ANIMAÇÃO 3D */
-        .moeda-container {
-            perspective: 1000px; /* Cria o efeito de profundidade 3D */
-            margin: 30px auto;
-            height: 150px;
+        #coin-container {
+            width: 120px;
+            height: 120px;
         }
 
-        .moeda {
-            width: 150px;
-            height: 150px;
-            position: relative;
-            transform-style: preserve-3d; /* Permite que os filhos sejam posicionados em 3D */
-            transition: transform 1.2s cubic-bezier(0.64, 0.02, 0.4, 1.51);
-            border-radius: 50%;
-        }
-
-        .face {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            backface-visibility: hidden; /* Oculta a face que está "atrás" */
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: opacity 0.2s ease-in-out;
-        }
-
+        /* Redimensiona as imagens da moeda junto com o container */
         .face img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .cara {
-            /* Fica na frente por padrão */
-        }
-        
-        .coroa {
-            /* Rotacionada para ficar na parte de trás da moeda */
-            transform: rotateY(180deg);
+            width: 120px;
         }
 
-        /* 3. LÓGICA DE ESTADOS DA ANIMAÇÃO */
-        .face-giro {
-            opacity: 0; /* Começa invisível */
+        #flip-button {
+            padding: 12px 25px;
+            font-size: 16px;
         }
 
-        /* Quando a moeda estiver girando (.is-spinning)... */
-        .moeda.is-spinning .cara,
-        .moeda.is-spinning .coroa {
-            opacity: 0; /* Esconde as faces de resultado */
+        #result {
+            font-size: 20px;
         }
-
-        .moeda.is-spinning .face-giro {
-            opacity: 1; /* Mostra a imagem de "blur" do giro */
-        }
-
-        /* Define a rotação final da moeda */
-        .moeda.girando-cara {
-            transform: rotateY(1800deg); /* 5 voltas completas */
-        }
-
-        .moeda.girando-coroa {
-            transform: rotateY(1980deg); /* 5.5 voltas para mostrar o verso */
-        }
-        
-        /* 4. ESTILOS ADICIONAIS PARA BOTÃO E PLACAR */
-        #girar-btn {
-            background-color: var(--primary);
-            color: var(--text-light);
-            border: none;
-            padding: 12px 30px;
-            font-size: 1.1em;
-            font-weight: 600;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s;
-            margin-bottom: 20px;
-        }
-
-        #girar-btn:hover {
-            background-color: var(--primary-hover);
-            transform: translateY(-2px);
-        }
-
-        #girar-btn:disabled {
-            background-color: #555;
-            cursor: not-allowed;
-            transform: translateY(0);
-        }
-
-        #resultado-texto {
-            font-size: 1.2em;
-            font-weight: 600;
-            min-height: 25px;
-            margin-bottom: 25px;
-        }
-
-        .placar {
-            display: flex;
-            justify-content: space-around;
-            background-color: var(--bg-dark);
-            padding: 15px;
-            border-radius: 15px;
-            margin-top: 10px;
-        }
-
-        .placar-item {
-            flex-basis: 50%;
-        }
-
-        .placar-item h3 {
-            margin: 0 0 5px 0;
-            color: var(--primary);
-        }
-
-        .placar-item p {
-            margin: 0;
-            font-size: 1.8em;
-            font-weight: 700;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="container-jogo">
-        <h1>Cara ou Coroa</h1>
-
-        <div class="moeda-container">
-            <div id="moeda" class="moeda">
-                <div class="face cara">
-                    <img src="https://i.imgur.com/K62r8S7.png" alt="Cara">
-                </div>
-                
-                <div class="face face-giro">
-                    <img src="https://i.imgur.com/tVL4a2A.png" alt="Moeda Girando">
-                </div>
-
-                <div class="face coroa">
-                    <img src="https://i.imgur.com/pSkso5s.png" alt="Coroa">
-                </div>
-            </div>
-        </div>
-
-        <button id="girar-btn">Girar Moeda</button>
-        <p id="resultado-texto">Clique para começar!</p>
-
-        <div class="placar">
-            <div class="placar-item">
-                <h3>Cara</h3>
-                <p id="placar-cara">0</p>
-            </div>
-            <div class="placar-item">
-                <h3>Coroa</h3>
-                <p id="placar-coroa">0</p>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        const moeda = document.getElementById('moeda');
-        const girarBtn = document.getElementById('girar-btn');
-        const resultadoTexto = document.getElementById('resultado-texto');
-        const placarCaraEl = document.getElementById('placar-cara');
-        const placarCoroaEl = document.getElementById('placar-coroa');
-
-        let placar = { cara: 0, coroa: 0 };
-
-        girarBtn.addEventListener('click', () => {
-            girarBtn.disabled = true;
-            resultadoTexto.textContent = 'Girando...';
-            
-            const resultadoSorteado = Math.floor(Math.random() * 2);
-
-            // Reseta as classes de animação anteriores
-            moeda.classList.remove('girando-cara', 'girando-coroa', 'is-spinning');
-            void moeda.offsetWidth; // Força o navegador a "repintar" o elemento
-
-            moeda.classList.add('is-spinning');
-
-            if (resultadoSorteado === 0) {
-                moeda.classList.add('girando-cara');
-            } else {
-                moeda.classList.add('girando-coroa');
-            }
-
-            // Espera a animação terminar para mostrar o resultado
-            setTimeout(() => {
-                moeda.classList.remove('is-spinning');
-
-                if (resultadoSorteado === 0) {
-                    resultadoTexto.textContent = 'Deu Cara!';
-                    placar.cara++;
-                    placarCaraEl.textContent = placar.cara;
-                } else {
-                    resultadoTexto.textContent = 'Deu Coroa!';
-                    placar.coroa++;
-                    placarCoroaEl.textContent = placar.coroa;
-                }
-                
-                girarBtn.disabled = false;
-            }, 1200); // Deve ser igual à duração da transição no CSS
-        });
-    </script>
-</body>
-</html>
+    }
+</style>

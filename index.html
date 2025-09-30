@@ -1,222 +1,165 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cara ou Coroa 🪙</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-
+    <title>Jogo de Cara ou Coroa</title>
     <style>
-        :root {
-            --bg-dark: #12182b;
-            --bg-light: #1f294a;
-            --primary: #5a67d8;
-            --primary-hover: #434190;
-            --text-light: #e0e1dd;
-            --shadow: rgba(0, 0, 0, 0.25);
-            --animation-duration: 1.5s; /* Variável para a duração da animação */
-        }
-
+        /* CSS para estilização e animação */
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            background: linear-gradient(135deg, var(--bg-dark), var(--bg-light));
-            color: var(--text-light);
+            height: 100vh;
             margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
+            background-color: #f0f0f0;
         }
 
-        .container-jogo {
+        .container {
             text-align: center;
-            background-color: var(--bg-light);
-            padding: 30px 40px;
-            border-radius: 25px;
-            box-shadow: 0 15px 35px var(--shadow);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            max-width: 400px;
-            width: 100%;
+            background-color: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
 
         h1 {
-            color: var(--text-light);
-            text-transform: uppercase;
-            margin-bottom: 20px;
-            font-size: 2.5em;
-            text-shadow: 2px 2px 5px var(--shadow);
+            color: #333;
+            margin-bottom: 30px;
         }
 
-        .moeda-container {
-            perspective: 1000px;
-            margin: 30px auto;
-            height: 150px;
-        }
-
-        .moeda {
+        #coin-container {
             width: 150px;
             height: 150px;
-            position: relative;
-            transform-style: preserve-3d;
-            border-radius: 50%;
-        }
-
-        /* ANIMAÇÃO APLICADA AQUI */
-        .moeda.animar-para-cara {
-            animation: animacao-giro-cara var(--animation-duration) forwards;
+            margin: 20px auto;
+            perspective: 1000px; /* Efeito de profundidade para o 3D */
         }
         
-        .moeda.animar-para-coroa {
-            animation: animacao-giro-coroa var(--animation-duration) forwards;
+        #coin {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 1s ease-in-out;
+        }
+
+        /* Classe que ativa a animação de giro */
+        .flipping {
+             transform: rotateY(1800deg); /* Gira 5 vezes (1800 = 5 * 360) */
         }
 
         .face {
             position: absolute;
             width: 100%;
             height: 100%;
-            border-radius: 50%;
-            backface-visibility: hidden; /* Oculta a face de trás */
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            /* Começam todas transparentes para a animação controlar a opacidade */
-            opacity: 0;
-        }
-        
-        .face img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .cara {
-            /* A animação vai torná-la visível quando necessário */
+            backface-visibility: hidden; /* Oculta a face de trás do elemento */
         }
 
-        .coroa {
+        .heads {
+            /* A imagem da cara fica na frente */
+            transform: rotateY(0deg);
+        }
+
+        .tails {
+            /* A imagem da coroa fica atrás, já rotacionada */
             transform: rotateY(180deg);
         }
 
-        /* NOVAS ANIMAÇÕES KEYFRAMES */
-        @keyframes animacao-giro-cara {
-            0%   { transform: rotateY(0deg); }
-            /* Mostra as imagens de giro em sequência */
-            25%  { opacity: 0; } /* Garante que a imagem anterior sumiu */
-            30%  { opacity: 1; } /* Mostra a imagem de giro 1 */
-            45%  { opacity: 0; }
-            50%  { opacity: 1; } /* Mostra a imagem de giro 2 */
-            65%  { opacity: 0; }
-            70%  { opacity: 1; } /* Mostra a imagem de giro 1 novamente */
-            /* Termina em "cara" (5 voltas completas) */
-            100% { transform: rotateY(1800deg); opacity: 1; }
+        #flip-button {
+            padding: 12px 25px;
+            font-size: 18px;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
         }
 
-        @keyframes animacao-giro-coroa {
-            0%   { transform: rotateY(0deg); }
-            /* Mostra as imagens de giro em sequência */
-            25%  { opacity: 0; }
-            30%  { opacity: 1; }
-            45%  { opacity: 0; }
-            50%  { opacity: 1; }
-            65%  { opacity: 0; }
-            70%  { opacity: 1; }
-            /* Termina em "coroa" (5.5 voltas) */
-            100% { transform: rotateY(1980deg); opacity: 1; }
+        #flip-button:hover {
+            background-color: #0056b3;
         }
 
-        /* Estilos dos controles e placar */
-        #girar-btn { background-color: var(--primary); color: var(--text-light); border: none; padding: 12px 30px; font-size: 1.1em; font-weight: 600; border-radius: 50px; cursor: pointer; transition: background-color 0.3s, transform 0.2s; margin-bottom: 20px; }
-        #girar-btn:hover { background-color: var(--primary-hover); transform: translateY(-2px); }
-        #girar-btn:disabled { background-color: #555; cursor: not-allowed; transform: translateY(0); }
-        #resultado-texto { font-size: 1.2em; font-weight: 600; min-height: 25px; margin-bottom: 25px; }
-        .placar { display: flex; justify-content: space-around; background-color: var(--bg-dark); padding: 15px; border-radius: 15px; margin-top: 10px; }
-        .placar-item { flex-basis: 50%; }
-        .placar-item h3 { margin: 0 0 5px 0; color: var(--primary); }
-        .placar-item p { margin: 0; font-size: 1.8em; font-weight: 700; }
+        #flip-button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        #result {
+            margin-top: 25px;
+            font-size: 22px;
+            font-weight: bold;
+            color: #555;
+            height: 30px; /* Altura fixa para não "pular" o layout */
+        }
     </style>
 </head>
 <body>
 
-    <div class="container-jogo">
+    <div class="container">
         <h1>Cara ou Coroa</h1>
-
-        <div class="moeda-container">
-            <div id="moeda" class="moeda">
-                <div class="face cara"><img src="https://i.imgur.com/K62r8S7.png" alt="Cara"></div>
-                <div class="face coroa"><img src="https://i.imgur.com/pSkso5s.png" alt="Coroa"></div>
-                
-                <div class="face giro-1"><img src="https://i.imgur.com/M12b2s1.png" alt="Moeda em ângulo"></div>
-                <div class="face giro-2"><img src="https://i.imgur.com/s6344h1.png" alt="Moeda de lado"></div>
+        
+        <div id="coin-container">
+            <div id="coin">
+                <div class="face heads">
+                    <img src="https://i.ibb.co/XX4LhpS/moeda-cara.png" alt="Cara" width="150">
+                </div>
+                <div class="face tails">
+                    <img src="https://i.ibb.co/p1z2bM3/moeda-coroa.png" alt="Coroa" width="150">
+                </div>
             </div>
         </div>
 
-        <button id="girar-btn">Girar Moeda</button>
-        <p id="resultado-texto">Clique para começar!</p>
-
-        <div class="placar">
-            <div class="placar-item"><h3>Cara</h3><p id="placar-cara">0</p></div>
-            <div class="placar-item"><h3>Coroa</h3><p id="placar-coroa">0</p></div>
-        </div>
+        <button id="flip-button">Jogar!</button>
+        <p id="result"></p>
     </div>
 
     <script>
-        const moeda = document.getElementById('moeda');
-        const girarBtn = document.getElementById('girar-btn');
-        const resultadoTexto = document.getElementById('resultado-texto');
-        const placarCaraEl = document.getElementById('placar-cara');
-        const placarCoroaEl = document.getElementById('placar-coroa');
-        
-        // As faces agora são selecionadas para controle de opacidade
-        const faceCara = document.querySelector('.cara');
-        const faceCoroa = document.querySelector('.coroa');
-        const faceGiro1 = document.querySelector('.giro-1');
-        const faceGiro2 = document.querySelector('.giro-2');
+        // JavaScript para a lógica do jogo
+        const coin = document.getElementById('coin');
+        const flipButton = document.getElementById('flip-button');
+        const result = document.getElementById('result');
 
-        let placar = { cara: 0, coroa: 0 };
-        let girando = false;
+        let isFlipping = false;
+        let headsCount = 0;
+        let tailsCount = 0;
 
-        girarBtn.addEventListener('click', () => {
-            if (girando) return; // Impede novos cliques durante a animação
+        flipButton.addEventListener('click', () => {
+            // Previne múltiplos cliques durante a animação
+            if (isFlipping) return;
 
-            girando = true;
-            girarBtn.disabled = true;
-            resultadoTexto.textContent = 'Girando...';
+            isFlipping = true;
+            flipButton.disabled = true;
+            result.textContent = '';
+
+            // Decide o resultado (0 para Cara, 1 para Coroa)
+            const isTails = Math.random() < 0.5;
+
+            // Adiciona a classe para iniciar a animação de giro
+            coin.classList.add('flipping');
             
-            // Remove classes de animação anteriores
-            moeda.classList.remove('animar-para-cara', 'animar-para-coroa');
-            
-            const resultadoSorteado = Math.floor(Math.random() * 2);
-            
-            // Aplica a animação correta
-            if (resultadoSorteado === 0) {
-                moeda.classList.add('animar-para-cara');
-            } else {
-                moeda.classList.add('animar-para-coroa');
-            }
+            // Aguarda a animação terminar (1 segundo, como definido no CSS)
+            setTimeout(() => {
+                // Remove a classe para poder girar novamente
+                coin.classList.remove('flipping');
 
-            // Define um ouvinte para o FIM da animação
-            moeda.addEventListener('animationend', () => {
-                // Atualiza o placar e texto
-                if (resultadoSorteado === 0) {
-                    resultadoTexto.textContent = 'Deu Cara!';
-                    placar.cara++;
-                    placarCaraEl.textContent = placar.cara;
+                // Atualiza a posição final da moeda (sem animação)
+                if (isTails) {
+                    coin.style.transform = 'rotateY(180deg)'; // Garante que a coroa esteja visível
+                    result.textContent = 'Resultado: Coroa';
                 } else {
-                    resultadoTexto.textContent = 'Deu Coroa!';
-                    placar.coroa++;
-                    placarCoroaEl.textContent = placar.coroa;
+                    coin.style.transform = 'rotateY(0deg)'; // Garante que a cara esteja visível
+                    result.textContent = 'Resultado: Cara';
                 }
-                
-                girando = false;
-                girarBtn.disabled = false;
-                
-            }, { once: true }); // O {once: true} faz o ouvinte ser removido após ser disparado
+
+                // Libera o botão para um novo jogo
+                isFlipping = false;
+                flipButton.disabled = false;
+            }, 1000); // Duração da animação em milissegundos
         });
     </script>
+
 </body>
 </html>
