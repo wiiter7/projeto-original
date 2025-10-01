@@ -1,11 +1,8 @@
 <style>
-    /* CSS APRIMORADO para estilização e animação */
     
-    /* Importa a fonte do Google Fonts (alternativa ao link no <head>) */
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
     body {
-        /* MELHORIA: Fonte e fundo em gradiente */
         font-family: 'Poppins', sans-serif;
         display: flex;
         justify-content: center;
@@ -20,14 +17,12 @@
         background-color: rgba(255, 255, 255, 0.95);
         padding: 40px 50px;
         border-radius: 20px;
-        /* MELHORIA: Sombra mais elaborada para efeito de "elevação" */
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        backdrop-filter: blur(10px); /* Efeito de vidro fosco (para navegadores compatíveis) */
+        backdrop-filter: blur(10px); 
         border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
     h1 {
-        /* MELHORIA: Cor e espaçamento */
         color: #333;
         margin-bottom: 30px;
         font-weight: 600;
@@ -75,7 +70,7 @@
         font-size: 18px;
         font-weight: 600;
         color: white;
-        background: linear-gradient(45deg, #007bff, #0056b3); /* MELHORIA: Botão com gradiente */
+        background: linear-gradient(45deg, #007bff, #0056b3); 
         border: none;
         border-radius: 10px;
         cursor: pointer;
@@ -84,11 +79,10 @@
     }
 
     #flip-button:hover {
-        transform: translateY(-2px); /* Efeito de "levantar" ao passar o mouse */
+        transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
     }
 
-    /* NOVO: Efeito de clique no botão */
     #flip-button:active {
         transform: translateY(1px);
         box-shadow: 0 2px 10px rgba(0, 123, 255, 0.3);
@@ -107,11 +101,9 @@
         font-weight: 600;
         color: #444;
         height: 35px;
-        /* MELHORIA: Adiciona uma transição suave para quando o texto aparecer */
         transition: opacity 0.5s ease-in-out;
     }
 
-    /* NOVO: Estilização para telas menores (celulares) */
     @media (max-width: 480px) {
         .container {
             padding: 30px 25px;
@@ -126,7 +118,6 @@
             height: 120px;
         }
 
-        /* Redimensiona as imagens da moeda junto com o container */
         .face img {
             width: 120px;
         }
