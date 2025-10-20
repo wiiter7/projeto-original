@@ -1,134 +1,148 @@
-<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    /* ALTERAÇÃO: Fundo alterado de gradiente para cinza escuro */
+    background: #2d2d2d;
+}
+
+.container {
+    text-align: center;
+    /* ALTERAÇÃO: Cor de fundo adaptada para tema escuro */
+    background-color: rgba(50, 50, 50, 0.95);
+    padding: 40px 50px;
+    border-radius: 20px;
+    /* ALTERAÇÃO: Sombra ajustada para fundo escuro */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px); 
+    /* ALTERAÇÃO: Borda ajustada para tema escuro */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+h1 {
+    /* ALTERAÇÃO: Cor do texto alterada para clara */
+    color: #eeeeee;
+    margin-bottom: 30px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+#coin-container {
+    width: 150px;
+    height: 150px;
+    margin: 30px auto;
+    perspective: 1000px;
+}
+
+#coin {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 1s cubic-bezier(0.6, -0.28, 0.735, 0.045); 
     
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+    filter: drop-shadow(0 5px 8px rgba(0,0,0,0.3));
+}
 
-    body {
-        font-family: 'Poppins', sans-serif;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-        background: linear-gradient(135deg, #667eea, #764ba2);
-    }
+/* * NOTA: Esta classe não está "errada". 
+ * 1800deg = 5 giros completos. Ela faz a moeda girar e parar 
+ * exatamente onde começou (Cara).
+ * * Um arquivo JavaScript (script.js) seria o responsável por 
+ * decidir o resultado e aplicar a rotação correta. 
+ * (ex: 1800deg para Cara, 1980deg para Coroa).
+ * O CSS sozinho não consegue tomar essa decisão.
+ */
+.flipping {
+     transform: rotateY(1800deg);
+}
 
+.face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+}
+
+.heads {
+    transform: rotateY(0deg);
+}
+
+.tails {
+    transform: rotateY(180deg);
+}
+
+#flip-button {
+    padding: 15px 30px;
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(45deg, #007bff, #0056b3); 
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+}
+
+#flip-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+}
+
+#flip-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 10px rgba(0, 123, 255, 0.3);
+}
+
+#flip-button:disabled {
+    background: #b8b8b8;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: translateY(0);
+}
+
+#result {
+    margin-top: 30px;
+    font-size: 24px;
+    font-weight: 600;
+    /* ALTERAÇÃO: Cor do texto alterada para clara */
+    color: #cccccc;
+    height: 35px;
+    transition: opacity 0.5s ease-in-out;
+}
+
+@media (max-width: 480px) {
     .container {
-        text-align: center;
-        background-color: rgba(255, 255, 255, 0.95);
-        padding: 40px 50px;
-        border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        backdrop-filter: blur(10px); 
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 30px 25px;
     }
 
     h1 {
-        color: #333;
-        margin-bottom: 30px;
-        font-weight: 600;
-        letter-spacing: 1px;
+        font-size: 24px;
     }
 
     #coin-container {
-        width: 150px;
-        height: 150px;
-        margin: 30px auto;
-        perspective: 1000px;
-    }
-    
-    #coin {
-        width: 100%;
-        height: 100%;
-        position: relative;
-        transform-style: preserve-3d;
-        transition: transform 1s cubic-bezier(0.6, -0.28, 0.735, 0.045); 
-        
-        filter: drop-shadow(0 5px 8px rgba(0,0,0,0.3));
+        width: 120px;
+        height: 120px;
     }
 
-    .flipping {
-         transform: rotateY(1800deg);
-    }
-
-    .face {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        backface-visibility: hidden;
-    }
-
-    .heads {
-        transform: rotateY(0deg);
-    }
-
-    .tails {
-        transform: rotateY(180deg);
+    /* * NOTA: Este seletor está correto. Ele espera que 
+     * você use tags <img> dentro das divs .face no seu HTML.
+     */
+    .face img {
+        width: 120px;
     }
 
     #flip-button {
-        padding: 15px 30px;
-        font-size: 18px;
-        font-weight: 600;
-        color: white;
-        background: linear-gradient(45deg, #007bff, #0056b3); 
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+        padding: 12px 25px;
+        font-size: 16px;
     }
 
-    #flip-button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
-    }
-
-    #flip-button:active {
-        transform: translateY(1px);
-        box-shadow: 0 2px 10px rgba(0, 123, 255, 0.3);
-    }
-
-    #flip-button:disabled {
-        background: #b8b8b8;
-        cursor: not-allowed;
-        box-shadow: none;
-        transform: translateY(0);
-    }
-    
     #result {
-        margin-top: 30px;
-        font-size: 24px;
-        font-weight: 600;
-        color: #444;
-        height: 35px;
-        transition: opacity 0.5s ease-in-out;
+        font-size: 20px;
     }
-
-    @media (max-width: 480px) {
-        .container {
-            padding: 30px 25px;
-        }
-
-        h1 {
-            font-size: 24px;
-        }
-
-        #coin-container {
-            width: 120px;
-            height: 120px;
-        }
-
-        .face img {
-            width: 120px;
-        }
-
-        #flip-button {
-            padding: 12px 25px;
-            font-size: 16px;
-        }
-
-        #result {
-            font-size: 20px;
-        }
-    }
-</style>
+}
